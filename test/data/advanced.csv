@@ -1,0 +1,8 @@
+# This is the header row
+
+ID, Name, Address, Balance
+
+12, "Bobby" "Tables", "Shipping & Receiving\n123 Package Road", $123.00
+77, "Raymond Bourque", "Denver, CO", "$1,000,000.00"
+# Comment here
+27, "Gilles Villenue", 'Montreal, Quebec Canada', twenty seven
