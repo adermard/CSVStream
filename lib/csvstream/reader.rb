@@ -45,7 +45,14 @@ module CSVStream
     #
     # Dont stomp on columns past what is given here.
     def set_columns(column_types, column_names = [])
-      column_types.each_index {|i| @columns[i] = Column.new(column_names[i] || "Field #{i}", column_types[i] || :string)}
+      column_types.each_index do |i|
+        if @columns[i].nil?
+          @columns[i] ||= Column.new(column_names[i] || "Field #{i}", column_types[i])
+        else
+          @columns[i].type = column_types[i] if column_types[i]
+          @columns[i].name = column_names[i] if column_names[i]
+        end
+      end
       @options[:column_overflow] = true if @options[:column_overflow].nil?
       @options[:column_underflow] = true if @options[:column_underflow].nil?
       true

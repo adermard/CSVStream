@@ -13,6 +13,9 @@ module CSVStream
 	#   "" should stil be considered emtpy string
 	# Figure out better way to handle EOF than an exception
 	# Figure out how to reduce the options everywhere mess
+	# think about handling smart quotes
+	# Look into the special character used to identify line breaks in a field (vertical tab) It would need
+	#  replaced with a newline character
 
   class CSVStreamError < RuntimeError
   	attr_accessor :message

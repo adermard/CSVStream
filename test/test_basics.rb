@@ -25,6 +25,8 @@ class TestBasics < MiniTest::Unit::TestCase
     # Handle newlines inside of quoted strings
     # Handle separators inside of quoted strings
     # Handle empty fields
+    # Check type conversions
+    # Column access by index and name
     def test_harder_file()
     	results  = []
 	    data = '
@@ -38,13 +40,18 @@ class TestBasics < MiniTest::Unit::TestCase
 			'
 		f = CSVStream::Reader.new(:string => data)
 		f.read_columns
+		f.set_columns([:integer, :string, :string, :string, :float])
 		begin
 			while (r = f.row())
 				results << r
 			end
 		rescue CSVStream::CSVStreamEOF => ex
 		end
-		assert results[1].values.none? {|v| v.length > 0}
+		assert results[1].values.all? {|v| v.is_a?(String) ? v == "" : v == 0}
+		# Check column access
+		assert_equal results[2][0], results[2]["Year"]
+		assert_equal 4900.00, results[2]["Price"]
+
 		assert_equal 0, f.stats.get("Bad Lines")
 		assert_equal 6, f.stats.get("Lines Processed")
 	end
