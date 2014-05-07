@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["adam@ourstage.com"]
   spec.description   = %q{A more robust and featured parser than contained in Ruby}
   spec.summary       = %q{A CSV Parsing gem}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/adermard/CSVStream"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

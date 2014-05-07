@@ -11,6 +11,7 @@ module CSVStream
     attr_accessor :stats
 
     def initialize(options = {})
+      @columns = []
       @options = {
         whitespace: " \t\r\n",
         eol: "\n",
@@ -30,32 +31,17 @@ module CSVStream
     def read_columns
       raise CSVStreamError.new("Error: No active stream to read") unless @fp.respond_to?(:getc)
       header = Row.new(nil, @options)
-      @columns = [] if @columns.nil?
-      readline().each_with_index do |c, i|
-        if @columns[i].is_a?(Column)
-          @columns[i].name = c
-        else
-          @columns[i] ||= Column.new(c, :string, @options)
-        end
-      end
+      
+      @columns = Column.set(@columns, nil, readline(), @options)
       @options[:column_overflow] = true if @options[:column_overflow].nil?
       @options[:column_underflow] = true if @options[:column_underflow].nil?
-      true
     end
     #
-    # Dont stomp on columns past what is given here.
+    # Dont stomp on prior columns data unless what is given here overrides
     def set_columns(column_types, column_names = [])
-      column_types.each_index do |i|
-        if @columns[i].nil?
-          @columns[i] ||= Column.new(column_names[i] || "Field #{i}", column_types[i])
-        else
-          @columns[i].type = column_types[i] if column_types[i]
-          @columns[i].name = column_names[i] if column_names[i]
-        end
-      end
+      @columns = Column.set(@columns, column_types, column_names, @options)
       @options[:column_overflow] = true if @options[:column_overflow].nil?
       @options[:column_underflow] = true if @options[:column_underflow].nil?
-      true
     end
 
     def reset(options = {})

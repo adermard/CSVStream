@@ -22,12 +22,15 @@ Or install it yourself as:
 
 Simple Reader example code:
 
+```ruby
 f = CSVStream::Reader.new(file: "./data.csv")
 f.read_columns
 f.each {|line| puts line}
+```
 
 More Advanced Reader example:
 
+```ruby
 f = CSVStream::Reader.new(file: "./data.csv")
 f.set_columns([:string, :number, :date, :string], ["Name", "Age", "Birthdate", "Moto"])
 
@@ -35,6 +38,7 @@ while still_working
 	row = f.row()
 	puts "#{row['Name']} - #{row['Moto']}" if (Time.now.to_date - row[1]) > 21.years
 end
+```
 
 
 ## Exceptions Thrown
